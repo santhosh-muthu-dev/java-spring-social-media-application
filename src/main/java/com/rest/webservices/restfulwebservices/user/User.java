@@ -1,10 +1,13 @@
 package com.rest.webservices.restfulwebservices.user;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+
+@JsonFilter("UserBeanFilter")
 public class User {
     private Integer id;
 
@@ -12,12 +15,12 @@ public class User {
     private String name;
 
     @Past(message = "Birth Date should be in the past")
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
-    public User(Integer id, String name, LocalDate birthDate) {
+    public User(Integer id, String name, LocalDate birthdate) {
         this.id = id;
         this.name = name;
-        this.birthDate = birthDate;
+        this.birthdate = birthdate;
     }
 
     public Integer getId() {
@@ -36,12 +39,12 @@ public class User {
         this.name = name;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", birthDate=" + birthDate +
+                ", birthDate=" + birthdate +
                 '}';
     }
 }

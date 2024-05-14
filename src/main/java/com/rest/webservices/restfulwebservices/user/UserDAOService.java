@@ -1,44 +1,37 @@
 package com.rest.webservices.restfulwebservices.user;
 
+import com.rest.webservices.restfulwebservices.JPA.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Optional;
 
 @Component
 public class UserDAOService {
 
     //JPA/Hibernate --> Database
+    @Autowired
+    private final UserRepository repository;
 
-    //Now Creating Static Service
-    private static List<User> users = new ArrayList<>();
-    private static int usersCount = 0;
-
-//    static {
-//        users.add(new User(++usersCount, "Adam", LocalDate.now().minusYears(30)));
-//        users.add(new User(++usersCount, "Eve", LocalDate.now().minusYears(20)));
-//        users.add(new User(++usersCount, "Jim", LocalDate.now().minusYears(25)));
-//    }
-
-    public List<User> findAll() {
-        return users;
+    public UserDAOService(UserRepository repository) {
+        this.repository = repository;
     }
 
     public User saveUser(User user) {
-       user.setId(++usersCount);
-       users.add(user);
+       this.repository.save(user);
        return user;
     }
 
-    public User findOne(int id) {
-        Predicate<? super User> predicate = user -> user.getId().equals(id);
-        return users.stream().filter(predicate).findFirst().orElse(null);
+    public List<User> findAll() {
+        return this.repository.findAll();
+    }
+
+    public Optional<User> findById(int id) {
+        return this.repository.findById(id);
     }
 
     public void deleteById(int id) {
-        Predicate<? super User> predicate = user -> user.getId().equals(id);
-        users.removeIf(predicate);
+        this.repository.deleteById(id);
     }
 }

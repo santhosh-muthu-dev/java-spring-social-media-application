@@ -1,10 +1,13 @@
 package com.rest.webservices.restfulwebservices.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rest.webservices.restfulwebservices.post.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "users")
 public class User {
@@ -18,8 +21,12 @@ public class User {
     private String name;
 
     @Past(message = "Birth Date should be in the past")
-    @Column(name = "birthdate")
+    @Column(name = "birth_date")
     private LocalDate birthdate;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Post> posts;
 
     protected User(){}
 
@@ -51,6 +58,14 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override
